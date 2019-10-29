@@ -18,8 +18,6 @@ export default class App extends Component {
     pageNumber: 1,
     images: [],
     modalImage: false,
-    currentPage: 1,
-    currentRequest: ''
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -53,8 +51,8 @@ export default class App extends Component {
 };
 
 hendelLoadMore = () =>
-this.setState(({ currentPage }) => {
-  return { currentPage: currentPage + 1 };
+this.setState(({ pageNumber }) => {
+  return { pageNumber: pageNumber + 1 };
 });
 
   onModalOpen = image => {
@@ -78,7 +76,6 @@ this.setState(({ currentPage }) => {
           <Modal modalImage={modalImage} 
           onModalClose={this.onModalClose} />
         )}
-
         <button
           type="button"
           onClick={this.hendelLoadMore}
