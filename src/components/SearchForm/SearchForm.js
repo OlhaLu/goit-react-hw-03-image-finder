@@ -7,16 +7,12 @@ export default class SearchForm extends Component {
   };
   
   handleChange = e => {
-    this.setState({
-      value: e.target.value,
-    });
+    this.setState({ value: e.target.value });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-
     this.props.onSearch(this.state.value);
-
     this.setState({ value: '' });
   };
 
@@ -31,7 +27,7 @@ export default class SearchForm extends Component {
           type="text"
           autoComplete="off"
           value={value}
-          onChange={this.hendelChenge}
+          onChange={this.handleChange}
           placeholder="Search images..."
         />
       </form>

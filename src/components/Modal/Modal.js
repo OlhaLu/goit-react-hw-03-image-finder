@@ -8,7 +8,7 @@ const MODAL_ROOT = document.querySelector('#modal-root');
 export default class Modal extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    onClose: PropTypes.func.isRequired,
+    onModalClose: PropTypes.func.isRequired,
   };
 
   backdropRef = createRef();
@@ -28,7 +28,7 @@ export default class Modal extends Component {
       return;
     }
 
-    this.props.onClose();
+    this.props.onModalClose();
   };
 
   handleBackdropClick = e => {
@@ -36,7 +36,7 @@ export default class Modal extends Component {
       return;
     }
 
-    this.props.onClose();
+    this.props.onModalClose();
   };
 
   render() {

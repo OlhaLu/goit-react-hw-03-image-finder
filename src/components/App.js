@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import Gallery from './Gallery/Gallery';
 import SearchForm from './SearchForm/SearchForm';
+import Gallery from './Gallery/Gallery';
+import Modal from './Modal/Modal';
 import {fetchPhotos} from '../config/configAPI';
 // import styles from '../../styles.css';
 
 const mapper = photos => {
-  return photos.map(({ objectID: id, url: link, ...props }) => ({
-    id,
-    link,
-    ...props,
+  return photos.map(({
+    id, webformatURL, largeImageURL, likes, views, comments, downloads}) => ({
+    id, webformatURL, largeImageURL, likes, views, comments, downloads
   }));
 };
 
@@ -17,28 +17,43 @@ export default class App extends Component {
     query: '',
     pageNumber: 1,
     photos: [],
+    modalImage: false,
     currentPage: 1,
     currentRequest: ''
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    const { photos } = this.state;
+    if (prevState.photos !== photos) {
+      window.scrollTo({
+        top: 100,
+        left: 100,
+        behavior: 'smooth'
+      });
+    }
+  }
 
-  handleSubmit = query => {
-    this.setState({ query, photos: [], page: 1 }, this.fetchPhotos);
+  handleSubmit = e => {
+    const { query, pageNumber } = this.state;
+    e.preventDefault();
+    const handlePageNumber = pageNumber + 1;
+    this.setState({ page: handlePageNumber });
+    this.fetchPhotos(query, handlePageNumber);
   };
 
-  hendeLoadMore = () =>
+  hendelLoadMore = () =>
   this.setState(({ currentPage }) => {
     return { currentPage: currentPage + 1 };
   });
   
   fetchPhotos = () => {
-    const { query, page } = this.state;
+    const { query, pageNumber } = this.state;
   
-    fetchPhotos(query, page)
+    fetchPhotos(query, pageNumber)
       .then(photos => {
         this.setState(prevState => ({
           photos: [...prevState.photos, ...mapper(photos)],
-          page: prevState.page + 1,
+          pageNumber: prevState.pageNumber + 1,
         }));
       })
       .catch(error => {
@@ -46,18 +61,35 @@ export default class App extends Component {
       })
   };
 
+  onModalOpen = image => {
+    this.setState({ modalImage: image });
+  };
+
+  onModalClose = () => {
+    this.setState({ modalImage: null });
+  };
+
   render () {
-    const { currentPage, currentRequest } = this.state;
+    const { photos, modalImage } = this.state;
 
     return (
       <>
-      <SearchForm hendelSerch={this.hendelSerch} />
-      <Gallery 
-      request={currentRequest}
-      page={currentPage}
-      restPages={this.handleSubmit}
-      hendeLoadMore={this.hendeLoadMore}
-      />
+     <div>
+      <SearchForm onSubmit={this.handleSubmit} />
+        <Gallery photos={photos} 
+        onModalOpen={this.onModalOpen} />
+        {modalImage && (
+          <Modal modalImage={modalImage} 
+          onModalClose={this.onModalClose} />
+        )}
+
+        <button
+          type="button"
+          onClick={this.hendelLoadMore}
+        >
+          Load more
+        </button>
+      </div>
       </>
     );
     }

@@ -1,33 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import PhotoCard from '../PhotoCard/PhotoCard';
 import styles from '../../styles.css';
 const uuidv1 = require('uuid/v1');
 
-export default class Gallery  extends Component {
-state = {
-  data: {},
-  id: uuidv1()
-}
-
-render () {
-  const { id, data } = this.state;
-    const { handleBackdropClick, hendeLoadMore } = this.props;
-
-    return (
-    <ul className={styles.gallery}>
-        {data.map(item => (
-            <PhotoCard 
-            id={id}
-            photo={item} 
-            onImgClick={handleBackdropClick} />
+const Gallery = ({ photos, showLargeImage }) => (
+  <ul className={styles.gallery}>
+    {photos.map(item => (
+      <li key={uuidv1()} 
+      className="galleryItem">
+        <PhotoCard 
+        item={item} 
+        onModalOpen={showLargeImage} />
+      </li>
     ))}
-  <button 
-  type="button" 
-  onClick={hendeLoadMore}>
-    Load more
-  </button>
   </ul>
-    )
-  }
-}
+);
 
+Gallery.propTypes = {
+  photos: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      likes: PropTypes.number.isRequired,
+      views: PropTypes.number.isRequired,
+      comments: PropTypes.number.isRequired,
+      downloads: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  onModalOpen: PropTypes.func.isRequired,
+};
+
+export default Gallery;
