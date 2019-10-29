@@ -4,9 +4,9 @@ import PhotoCard from '../PhotoCard/PhotoCard';
 import styles from '../../styles.css';
 const uuidv1 = require('uuid/v1');
 
-const Gallery = ({ photos, showLargeImage }) => (
+const Gallery = ({ images, showLargeImage }) => (
   <ul className={styles.gallery}>
-    {photos.map(item => (
+    {images.map(item => (
       <li key={uuidv1()} 
       className="galleryItem">
         <PhotoCard 
@@ -18,7 +18,7 @@ const Gallery = ({ photos, showLargeImage }) => (
 );
 
 Gallery.propTypes = {
-  photos: PropTypes.arrayOf(
+  images: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,

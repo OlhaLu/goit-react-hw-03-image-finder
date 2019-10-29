@@ -5,8 +5,8 @@ import Modal from './Modal/Modal';
 import {fetchPhotos} from '../config/configAPI';
 // import styles from '../../styles.css';
 
-const mapper = photos => {
-  return photos.map(({
+const mapper = images => {
+  return images.map(({
     id, webformatURL, largeImageURL, likes, views, comments, downloads}) => ({
     id, webformatURL, largeImageURL, likes, views, comments, downloads
   }));
@@ -16,15 +16,15 @@ export default class App extends Component {
   state = {
     query: '',
     pageNumber: 1,
-    photos: [],
+    images: [],
     modalImage: false,
     currentPage: 1,
     currentRequest: ''
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { photos } = this.state;
-    if (prevState.photos !== photos) {
+    const { images } = this.state;
+    if (prevState.images !== images) {
       window.scrollTo({
         top: 100,
         left: 100,
@@ -33,33 +33,29 @@ export default class App extends Component {
     }
   }
 
-  handleSubmit = e => {
-    const { query, pageNumber } = this.state;
-    e.preventDefault();
-    const handlePageNumber = pageNumber + 1;
-    this.setState({ page: handlePageNumber });
-    this.fetchPhotos(query, handlePageNumber);
+  handleSubmit = query => {
+    this.setState({ query, images: [], page: 1 }, this.getImages);
   };
-
-  hendelLoadMore = () =>
-  this.setState(({ currentPage }) => {
-    return { currentPage: currentPage + 1 };
-  });
   
-  fetchPhotos = () => {
+  getImages = () => {
     const { query, pageNumber } = this.state;
   
     fetchPhotos(query, pageNumber)
-      .then(photos => {
+      .then(images => {
         this.setState(prevState => ({
-          photos: [...prevState.photos, ...mapper(photos)],
+          images: [...prevState.images, ...mapper(images)],
           pageNumber: prevState.pageNumber + 1,
         }));
       })
       .catch(error => {
         this.setState({ error });
       })
-  };
+};
+
+hendelLoadMore = () =>
+this.setState(({ currentPage }) => {
+  return { currentPage: currentPage + 1 };
+});
 
   onModalOpen = image => {
     this.setState({ modalImage: image });
@@ -70,13 +66,13 @@ export default class App extends Component {
   };
 
   render () {
-    const { photos, modalImage } = this.state;
+    const { images, modalImage } = this.state;
 
     return (
       <>
      <div>
       <SearchForm onSubmit={this.handleSubmit} />
-        <Gallery photos={photos} 
+        <Gallery images={images} 
         onModalOpen={this.onModalOpen} />
         {modalImage && (
           <Modal modalImage={modalImage} 

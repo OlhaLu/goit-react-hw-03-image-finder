@@ -11,9 +11,10 @@ export default class SearchForm extends Component {
   };
 
   handleSubmit = e => {
+    const { onSubmit } = this.props;
+    const { value } = this.state;
     e.preventDefault();
-    this.props.onSearch(this.state.value);
-    this.setState({ value: '' });
+    onSubmit(value);
   };
 
   render() {
