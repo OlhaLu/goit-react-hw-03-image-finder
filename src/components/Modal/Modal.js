@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import styles from './Modal.module.css';
 
-
 const MODAL_ROOT = document.querySelector('#modal-root');
 
 export default class Modal extends Component {
@@ -23,12 +22,9 @@ export default class Modal extends Component {
   }
 
   handleKeyPress = e => {
-    console.log(e);
-
     if (e.code !== 'Escape') {
       return;
     }
-
     this.props.onModalClose();
   };
 
@@ -43,7 +39,7 @@ export default class Modal extends Component {
   render() {
     const { children } = this.props;
 
-    return createPortal(
+    return createPortal (
       <div
         className={styles.backdrop}
         ref={this.backdropRef}

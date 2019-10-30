@@ -4,14 +4,14 @@ import PhotoCard from '../PhotoCard/PhotoCard';
 import styles from './Gallery.module.css';
 import uuidv1 from 'uuid/v1';
 
-const Gallery = ({ images, showLargeImage }) => (
+const Gallery = ({ images, onModalOpen }) => (
   <ul className={styles.gallery}>
     {images.map(image => (
-      <li key={uuidv1()} 
-      className="galleryItem">
+      <li key={uuidv1()}
+      className={styles.gallery_item}>
         <PhotoCard
-        image={image} 
-        onModalOpen={showLargeImage} />
+        {...image} 
+        onModalOpen={onModalOpen} />
       </li>
     ))}
   </ul>
@@ -28,7 +28,7 @@ Gallery.propTypes = {
       largeImageURL: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,
-  showLargeImage: PropTypes.func.isRequired,
+  onModalOpen: PropTypes.func.isRequired,
 };
 
 export default Gallery;

@@ -6,8 +6,8 @@ import {fetchPhotos} from '../../config/configAPI';
 import styles from './App.module.css';
 
 const mapper = images => {
-  return images.map(({ webformatURL: link, ...props }) => ({
-    link,
+  return images.map(({ webURL: webformatURL, ...props }) => ({
+    webformatURL,
     ...props,
   }));
 };
@@ -17,7 +17,8 @@ export default class App extends Component {
     query: '',
     pageNumber: 1,
     images: [],
-    modalImage: false,
+    largeImageURL: '',
+    isModalOpen: false
   };
 
   handleSubmit = query => {
@@ -39,6 +40,9 @@ export default class App extends Component {
 };
 
 hendelLoadMore = () => {
+  this.setState(
+    prevState => ({ pageNumber: prevState.pageNumber + 1 }))
+
   const { query, pageNumber, images } = this.state;
   fetchPhotos(query, pageNumber)
       .then(value => {
@@ -55,26 +59,26 @@ hendelLoadMore = () => {
     })
 }
 
-  onModalOpen = image => {
-    this.setState({ modalImage: image });
+  onModalOpen = largeImageURL => {
+    this.setState({ isModalOpen: true, largeImageURL });
   };
 
   onModalClose = () => {
-    this.setState({ modalImage: null });
+    this.setState({ isModalOpen: null });
   };
 
   render () {
-    const { images, modalImage } = this.state;
+    const { images, largeImageURL, isModalOpen } = this.state;
 
     return (
       <>
      <div className={styles.app}>
       <SearchForm onSubmit={this.handleSubmit} />
-        <Gallery images={images} 
-        onModalOpen={this.onModalOpen} />
-        {modalImage && (
-          <Modal modalImage={modalImage} 
-          onModalClose={this.onModalClose} />
+        <Gallery images={images} onModalOpen={this.onModalOpen} />  
+        {isModalOpen && (
+          <Modal onModalClose={this.onModalClose}>
+          <img src={largeImageURL} alt="" className={styles.image} />
+          </Modal>
         )}
         <button className={styles.button}
           type="button"

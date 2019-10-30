@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './PhotoCard.module.css';
 
-const PhotoCard = ({ webformatURL, tags, likes, views, comments, downloads, largeImageURL, showLargeImage}) => (
+const PhotoCard = ({ webformatURL, tags, likes, views, comments, downloads, largeImageURL, onModalOpen}) => (
   <div className={styles.photo_card}>
-  <img className={styles.img} src={webformatURL} alt={tags}/>
+  <img className={styles.img_web} src={webformatURL} alt={tags}/>
 
   <div className={styles.stats}>
     <p className={styles.stats_item}>
@@ -29,7 +29,7 @@ const PhotoCard = ({ webformatURL, tags, likes, views, comments, downloads, larg
     <button
       type="button"
       className={styles.fullscreen_button}
-      onClick={() => showLargeImage(largeImageURL)}
+      onClick={() => onModalOpen(largeImageURL)}
     >
       <i className="material-icons">zoom_out_map</i>
     </button>
@@ -45,7 +45,7 @@ PhotoCard.propTypes = {
     views: PropTypes.number.isRequired,
     comments: PropTypes.number.isRequired,
     downloads: PropTypes.number.isRequired,
-    showLargeImage: PropTypes.func.isRequired,
+    onModalOpen: PropTypes.func.isRequired,
 };
 
 export default PhotoCard;
