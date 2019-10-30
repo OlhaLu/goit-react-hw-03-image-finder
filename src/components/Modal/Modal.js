@@ -1,7 +1,8 @@
 import React, { Component, createRef } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import styles from '../../styles.css';
+import styles from './Modal.module.css';
+
 
 const MODAL_ROOT = document.querySelector('#modal-root');
 

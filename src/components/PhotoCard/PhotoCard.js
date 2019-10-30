@@ -1,35 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../../styles.css';
+import styles from './PhotoCard.module.css';
 
-const PhotoCard = ({ images, showLargeImage }) => (
+const PhotoCard = ({ webformatURL, tags, likes, views, comments, downloads, largeImageURL, showLargeImage}) => (
   <div className={styles.photo_card}>
-  <img src={images.webformatURL} alt={images.tags}/>
+  <img className={styles.img} src={webformatURL} alt={tags}/>
 
-  <div class="stats">
-    <p class="stats-item">
-      <i class="material-icons">thumb_up</i>
-      {images.likes}
+  <div className={styles.stats}>
+    <p className={styles.stats_item}>
+      <i className="material-icons">thumb_up</i>
+      {likes}
     </p>
-    <p class="stats-item">
-      <i class="material-icons">visibility</i>
-      {images.views}
+    <p className={styles.stats_item}>
+      <i className="material-icons">visibility</i>
+      {views}
     </p>
-    <p class="stats-item">
-      <i class="material-icons">comment</i>
-      {images.comments}
+    <p className={styles.stats_item}>
+      <i className="material-icons">comment</i>
+      {comments}
     </p>
-    <p class="stats-item">
-      <i class="material-icons">cloud_download</i>
-      {images.downloads}
+    <p className={styles.stats_item}>
+      <i className="material-icons">cloud_download</i>
+      {downloads}
     </p>
   </div>
 
   <div>
     <button
       type="button"
-      className={styles.fullscreenButton}
-      onClick={() => showLargeImage(images.largeImageURL)}
+      className={styles.fullscreen_button}
+      onClick={() => showLargeImage(largeImageURL)}
     >
       <i className="material-icons">zoom_out_map</i>
     </button>
@@ -38,16 +38,14 @@ const PhotoCard = ({ images, showLargeImage }) => (
   )
 
 PhotoCard.propTypes = {
-  image: PropTypes.shape({
     webformatURL: PropTypes.string.isRequired,
     largeImageURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
     likes: PropTypes.number.isRequired,
     views: PropTypes.number.isRequired,
     comments: PropTypes.number.isRequired,
     downloads: PropTypes.number.isRequired,
-    tags: PropTypes.string.isRequired
-  }).isRequired,
-  showLargeImage: PropTypes.func.isRequired,
+    showLargeImage: PropTypes.func.isRequired,
 };
 
 export default PhotoCard;

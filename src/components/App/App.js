@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import SearchForm from './SearchForm/SearchForm';
-import Gallery from './Gallery/Gallery';
-import Modal from './Modal/Modal';
-import {fetchPhotos} from '../config/configAPI';
-// import styles from '../../styles.css';
+import SearchForm from '../SearchForm/SearchForm';
+import Gallery from '../Gallery/Gallery';
+import Modal from '../Modal/Modal';
+import {fetchPhotos} from '../../config/configAPI';
+import styles from './App.module.css';
 
 const mapper = images => {
-  return images.map(({
-    id, webformatURL, largeImageURL, likes, views, comments, downloads}) => ({
-    id, webformatURL, largeImageURL, likes, views, comments, downloads
+  return images.map(({ webformatURL: link, ...props }) => ({
+    link,
+    ...props,
   }));
 };
 
@@ -20,28 +20,16 @@ export default class App extends Component {
     modalImage: false,
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { images } = this.state;
-    if (prevState.images !== images) {
-      window.scrollTo({
-        top: 100,
-        left: 100,
-        behavior: 'smooth'
-      });
-    }
-  }
-
   handleSubmit = query => {
     this.setState({ query, images: [], page: 1 }, this.getImages);
   };
-  
+
   getImages = () => {
     const { query, pageNumber } = this.state;
-  
     fetchPhotos(query, pageNumber)
-      .then(images => {
+      .then(value => {
         this.setState(prevState => ({
-          images: [...prevState.images, ...mapper(images)],
+          images: [...prevState.images, ...mapper(value)],
           pageNumber: prevState.pageNumber + 1,
         }));
       })
@@ -50,10 +38,22 @@ export default class App extends Component {
       })
 };
 
-hendelLoadMore = () =>
-this.setState(({ pageNumber }) => {
-  return { pageNumber: pageNumber + 1 };
-});
+hendelLoadMore = () => {
+  const { query, pageNumber, images } = this.state;
+  fetchPhotos(query, pageNumber)
+      .then(value => {
+      this.setState({
+    images: [...images, ...mapper(value)],
+      });
+      window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
+        });
+      })
+      .catch(error => {
+        this.setState({ error });
+    })
+}
 
   onModalOpen = image => {
     this.setState({ modalImage: image });
@@ -68,7 +68,7 @@ this.setState(({ pageNumber }) => {
 
     return (
       <>
-     <div>
+     <div className={styles.app}>
       <SearchForm onSubmit={this.handleSubmit} />
         <Gallery images={images} 
         onModalOpen={this.onModalOpen} />
@@ -76,7 +76,7 @@ this.setState(({ pageNumber }) => {
           <Modal modalImage={modalImage} 
           onModalClose={this.onModalClose} />
         )}
-        <button
+        <button className={styles.button}
           type="button"
           onClick={this.hendelLoadMore}
         >

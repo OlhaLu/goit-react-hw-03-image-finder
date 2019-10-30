@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../../styles.css';
+import styles from './SearchForm.module.css';
 
 export default class SearchForm extends Component {
   state = {
@@ -21,10 +21,9 @@ export default class SearchForm extends Component {
     const { value } = this.state;
 
     return (
-      <form 
-      className={styles.searchForm} 
+      <form className={styles.search}
       onSubmit={this.handleSubmit}>
-        <input
+        <input className={styles.input}
           type="text"
           autoComplete="off"
           value={value}

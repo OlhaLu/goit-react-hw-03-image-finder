@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PhotoCard from '../PhotoCard/PhotoCard';
-import styles from '../../styles.css';
-const uuidv1 = require('uuid/v1');
+import styles from './Gallery.module.css';
+import uuidv1 from 'uuid/v1';
 
 const Gallery = ({ images, showLargeImage }) => (
   <ul className={styles.gallery}>
-    {images.map(item => (
+    {images.map(image => (
       <li key={uuidv1()} 
       className="galleryItem">
-        <PhotoCard 
-        item={item} 
+        <PhotoCard
+        image={image} 
         onModalOpen={showLargeImage} />
       </li>
     ))}
@@ -20,16 +20,15 @@ const Gallery = ({ images, showLargeImage }) => (
 Gallery.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
       likes: PropTypes.number.isRequired,
       views: PropTypes.number.isRequired,
       comments: PropTypes.number.isRequired,
       downloads: PropTypes.number.isRequired,
-    }),
+      largeImageURL: PropTypes.string.isRequired,
+    }).isRequired,
   ).isRequired,
-  onModalOpen: PropTypes.func.isRequired,
+  showLargeImage: PropTypes.func.isRequired,
 };
 
 export default Gallery;
