@@ -74,19 +74,24 @@ hendelLoadMore = () => {
       <>
      <div className={styles.app}>
       <SearchForm onSubmit={this.handleSubmit} />
-        <Gallery images={images} onModalOpen={this.onModalOpen} />  
+        <Gallery images={images} 
+        onModalOpen={this.onModalOpen}
+        />  
         {isModalOpen && (
           <Modal onModalClose={this.onModalClose}>
           <img src={largeImageURL} alt="" className={styles.image} />
           </Modal>
         )}
-        <button className={styles.button}
-          type="button"
-          onClick={this.hendelLoadMore}
-        >
-          Load more
-        </button>
-      </div>
+      </div>   
+      <div className={styles.container}>
+      <button className={styles.button}
+        disabled={!this.state.query}
+        type="button"
+        onClick={this.hendelLoadMore}
+      >
+      Load more
+    </button>
+    </div>
       </>
     );
     }

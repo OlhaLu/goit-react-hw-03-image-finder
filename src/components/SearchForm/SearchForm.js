@@ -14,8 +14,8 @@ export default class SearchForm extends Component {
     const { onSubmit } = this.props;
     const { value } = this.state;
     e.preventDefault();
-    onSubmit(value);
-  };
+    onSubmit(value)
+}
 
   render() {
     const { value } = this.state;
