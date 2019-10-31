@@ -22,11 +22,11 @@ export default class App extends Component {
   };
 
   handleSubmit = query => {
-    this.setState({ query, images: [], page: 1 }, this.getImages);
+    this.setState({ query, images: [], pageNumber: 1 }, this.getImages);
   };
 
   getImages = () => {
-    const { query, pageNumber } = this.state;
+    const { query, pageNumber} = this.state;
     fetchPhotos(query, pageNumber)
       .then(value => {
         this.setState(prevState => ({
