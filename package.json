@@ -16,13 +16,11 @@
     "lint": "eslint src//*.js",
     "lint:fix": "eslint src//*.js --fix",
     "lint:format": "prettier src/**/*.{js,css,json} --write",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage": "https://OlhaLu.github.io/goit-react-hw-03-image-finder",
   "browserslist": {
     "production": [
       ">0.2%",
